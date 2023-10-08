@@ -25,6 +25,8 @@
 #define NO_OF_TSS_STACKS             7
 STATIC_ASSERT(NO_OF_TSS_STACKS <= NO_OF_IST);
 
+//lab1 
+
 typedef struct _SYSTEM_DATA
 {
     BYTE        NumberOfTssStacks;
