@@ -119,3 +119,8 @@ THREAD_PRIORITY
 ThreadGetPriority(
     IN_OPT  PTHREAD             Thread
     );
+
+STATUS
+GetNumberOfThreads(
+    INOUT    DWORD* NrThreads
+);
