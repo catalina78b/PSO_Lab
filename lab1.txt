@@ -1,0 +1,43 @@
+diff --git a/postbuild/paths.cmd b/postbuild/paths.cmd
+index 5c20a29..e9be1eb 100644
+--- a/postbuild/paths.cmd
++++ b/postbuild/paths.cmd
+@@ -52,6 +52,25 @@ set BOCHS_PATH="c:\Program Files (x86)\Bochs-2.6.8\"
+ 
+ goto end
+ 
++:config_AGURZOU-LPT
++
++set FILE_DESTINATION=__EMPTY__
++
++set SYMBOL_PATH=C:\Symbols
++
++set DBG_BASE=c:\Program Files (x86)\Windows Kits\10\Debuggers\x64
++
++set SYMSTORE_PATH="%DBG_BASE%\symstore.exe"
++
++set PXE_PATH=c:\workspace\PXE\
++
++set PXE_PATH2=pxe-GRZ
++
++set BOCHS_PATH="c:\Program Files (x86)\Bochs-2.6.8\"
++
++goto end
++
++
+ :config_DESKTOP-MGL16OR
+ 
+ SET VOL_MOUNT_LETTER="Q:"
+diff --git a/src/HAL9000/src/system.c b/src/HAL9000/src/system.c
+index b0b436e..a2a1859 100644
+--- a/src/HAL9000/src/system.c
++++ b/src/HAL9000/src/system.c
+@@ -25,6 +25,8 @@
+ #define NO_OF_TSS_STACKS             7
+ STATIC_ASSERT(NO_OF_TSS_STACKS <= NO_OF_IST);
+ 
++//lab1 
++
+ typedef struct _SYSTEM_DATA
+ {
+     BYTE        NumberOfTssStacks;
