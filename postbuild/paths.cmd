@@ -51,22 +51,14 @@ set BOCHS_PATH="c:\Program Files (x86)\Bochs-2.6.8\"
 
 goto end
 
-:config_AGURZOU-LPT
+:config_DESKTOP-MGL16OR
 
-set FILE_DESTINATION=__EMPTY__
-
-set SYMBOL_PATH=C:\Symbols
-
-set DBG_BASE=c:\Program Files (x86)\Windows Kits\10\Debuggers\x64
-
-set SYMSTORE_PATH="%DBG_BASE%\symstore.exe"
-
-set PXE_PATH=c:\workspace\PXE\
-
-set PXE_PATH2=pxe-GRZ
-
-set BOCHS_PATH="c:\Program Files (x86)\Bochs-2.6.8\"
-
+SET VOL_MOUNT_LETTER="Q:"
+SET PATH_TO_VM_FILE="C:\Users\40783\Dropbox\My PC (DESKTOP-MGL16OR)\Desktop\HAL9000folder\HAL9000\VM\HAL9000_VM\HAL9000.vmx"
+SET PATH_TO_VIX_TOOLS="C:\Program Files (x86)\VMware\VMware Workstation"
+SET PXE_PATH="C:\Users\40783\Dropbox\My PC (DESKTOP-MGL16OR)\Desktop\HAL9000folder\HAL9000\PXE"
+SET PATH_TO_VM_DISK="C:\Users\40783\Dropbox\My PC (DESKTOP-MGL16OR)\Desktop\HAL9000folder\HAL9000\VM\HAL9000_VM\HAL9000.vmdk"
+SET PATH_TO_LOG_FILE="C:\Users\40783\Dropbox\My PC (DESKTOP-MGL16OR)\Desktop\HAL9000folder\HAL9000\VM\HAL9000_VM\HAL9000.log"
 goto end
 
 :end
