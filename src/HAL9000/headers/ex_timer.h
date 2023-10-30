@@ -1,4 +1,6 @@
 #pragma once
+#include "ex_event.h"
+#include "lock_common.h"
 
 typedef enum _EX_TIMER_TYPE
 {
@@ -20,7 +22,24 @@ typedef struct _EX_TIMER
 
     volatile BOOLEAN    TimerStarted;
     BOOLEAN             TimerUninited;
-} EX_TIMER, *PEX_TIMER;
+
+    EX_EVENT TimerEvent;
+
+    LIST_ENTRY TimerListElem;
+
+}EX_TIMER, *PEX_TIMER;
+
+
+struct _GLOBAL_TIMER_LIST
+{
+    LOCK TimerListLock;
+    LIST_ENTRY TimerListHead;
+};
+
+
+void
+_No_competing_thread_
+ExTimerSystemPreinit(void);
 
 //******************************************************************************
 // Function:     ExTimerInit
@@ -102,6 +121,14 @@ ExTimerUninit(
     INOUT   PEX_TIMER       Timer
     );
 
+STATUS
+ExTimerCheck(
+    IN PLIST_ENTRY ListEntry,
+    IN_OPT PVOID FunctionContext);
+
+void
+ExTimerCheckAll();
+
 //******************************************************************************
 // Function:     ExTimerCompareTimers
 // Description:  Utility function to compare to two timers.
@@ -116,3 +143,8 @@ ExTimerCompareTimers(
     IN      PEX_TIMER     FirstElem,
     IN      PEX_TIMER     SecondElem
     );
+INT64
+ExTimerCompareListElems(
+    PLIST_ENTRY t1,
+    PLIST_ENTRY t2,
+    PVOID context);

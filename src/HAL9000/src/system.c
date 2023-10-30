@@ -19,6 +19,7 @@
 #include "network_stack.h"
 #include "dmp_common.h"
 #include "ex_system.h"
+#include "ex_timer.h"
 #include "process_internal.h"
 #include "boot_module.h"
 
@@ -46,6 +47,7 @@ SystemPreinit(
     BootModulesPreinit();
     DumpPreinit();
     ThreadSystemPreinit();
+    ExTimerSystemPreinit();
     printSystemPreinit(NULL);
     LogSystemPreinit();
     OsInfoPreinit();
