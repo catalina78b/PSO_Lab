@@ -773,5 +773,67 @@ STATUS
 
     return STATUS_SUCCESS;
 }
+STATUS
+EmptyFunc(
+    IN_OPT PVOID Context)
+{
+    UNREFERENCED_PARAMETER(Context);
+    return STATUS_SUCCESS;
+}
+STATUS
+thFunc1(
+    IN_OPT PVOID Context)
+{
+    UNREFERENCED_PARAMETER(Context);
+
+    for (QWORD i = 1; i <= 10; i++)
+    {
+        char ThreadName[10];
+        snprintf(ThreadName, 10, "ti_%d", i);
+        PTHREAD pThread;
+        ThreadCreate(ThreadName, ThreadPriorityDefault, EmptyFunc,NULL, &pThread);
+
+    }
+    return STATUS_SUCCESS;
+}
+STATUS
+Thread4Func(
+    IN_OPT PVOID Context)
+{
+    UNREFERENCED_PARAMETER(Context);
+
+    PTHREAD pThread;
+    ThreadCreate("e", ThreadPriorityDefault, EmptyFunc, NULL, &pThread);
+
+    return STATUS_SUCCESS;
+}
+STATUS
+thFunc2(
+    IN_OPT PVOID Context)
+{
+    UNREFERENCED_PARAMETER(Context);
+
+        PTHREAD pThread;
+        ThreadCreate("d", ThreadPriorityDefault, Thread4Func, NULL, &pThread);
+
+    return STATUS_SUCCESS;
+}
+void
+(__cdecl CmdThreadDescendents)(
+    IN      QWORD       NbOfParameters
+    )
+{
+    ASSERT(NbOfParameters==0);
+
+    PTHREAD pThread1;
+    ThreadCreate("a", ThreadPriorityDefault, thFunc1, NULL, &pThread1);
+
+    PTHREAD pThread2;
+    ThreadCreate("b", ThreadPriorityDefault, thFunc2, NULL, &pThread2);
+
+    PTHREAD pThread3;
+    ThreadCreate("c", ThreadPriorityDefault, EmptyFunc, NULL, &pThread3);
+
+}
 
 #pragma warning(pop)

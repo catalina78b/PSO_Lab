@@ -1,5 +1,6 @@
 #include "HAL9000.h"
 #include "thread_internal.h"
+#include "iomu.h"
 #include "synch.h"
 #include "cpumu.h"
 #include "ex_event.h"
@@ -794,6 +795,28 @@ _ThreadInit(
         pThread->State = ThreadStateBlocked;
         pThread->Priority = Priority;
 
+        pThread->nrDescendants = 0;
+
+        if (pThread->Id == 0) {
+            pThread->parentTh = NULL;
+        }
+        else
+        {
+            pThread->parentTh = GetCurrentThread();
+
+            PTHREAD iterator = pThread->parentTh;
+            LOG("As a result of [tid = %d] ", pThread->Id);
+
+            while (iterator != NULL)
+            {
+                iterator->nrDescendants++; //crestem descendentii la parinte si tot mergem pe ramura de parinte de jos in sus!!!
+                LOG("Th with tid %d now have %d descendents ", iterator->Id, iterator->nrDescendants);
+                iterator = iterator->parentTh;
+            }
+
+            pThread->createTime = IomuGetSystemTimeUs();
+        }
+
         LockInit(&pThread->BlockLock);
 
         LockAcquire(&m_threadSystemData.AllThreadsLock, &oldIntrState);
@@ -950,7 +973,7 @@ _ThreadSetupMainThreadUserStack(
     ASSERT(ResultingStack != NULL);
     ASSERT(Process != NULL);
 
-    *ResultingStack = InitialStack;
+    *ResultingStack = (PVOID)PtrDiff(InitialStack, SHADOW_STACK_SIZE + sizeof(PVOID));
 
     return STATUS_SUCCESS;
 }
@@ -1190,6 +1213,14 @@ _ThreadDestroy(
     LockAcquire(&m_threadSystemData.AllThreadsLock, &oldState);
     RemoveEntryList(&pThread->AllList);
     LockRelease(&m_threadSystemData.AllThreadsLock, oldState);
+
+    PTHREAD iterator = pThread->parentTh;
+
+    while (iterator != NULL)
+    {
+        iterator->nrDescendants--; //scadem descendentii la parinte si tot mergem pe ramura de parinte de jos in sus!!!
+        iterator = iterator->parentTh;
+    }
 
     // This must be done before removing the thread from the process list, else
     // this may be the last thread and the process VAS will be freed by the time
